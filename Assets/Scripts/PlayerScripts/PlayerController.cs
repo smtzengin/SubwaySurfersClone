@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -34,7 +31,6 @@ public class PlayerController : MonoBehaviour
         Vector3 move = transform.forward * speed;
         controller.Move(move * Time.deltaTime);
 
-        
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2f * gravityValue);
@@ -45,7 +41,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!Physics.Raycast(transform.position, transform.right, sidestepDistance, obstacleLayer))
             {                
-                controller.Move(transform.right * sidestepDistance);
+                controller.Move(transform.right * sidestepDistance);                
             }
         }
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
@@ -56,10 +52,17 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+                   
+            anim.SetTrigger("isSlide");            
+        }
+
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-        anim.SetBool("isRunning", true);
+        anim.SetBool("isRunning", true);        
     }
+
 
     private void OnDrawGizmos()
     {        
@@ -67,6 +70,33 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + transform.right * rayLength);
         Gizmos.DrawLine(transform.position, transform.position - transform.right * rayLength);
     }
-    
+
+    public void StartSlide()
+    {
+        Debug.Log("Start Animation Event Triggered");
+        controller.height = 0.25f;
+        controller.center = new Vector3(0f, .13f, 0.03f);
+    }
+
+    public void ResetSlide()
+    {
+        Debug.Log("Animation Event Triggered");
+        controller.height = 0.48f;
+        controller.center = new Vector3(0f, .25f, 0.03f);
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Gold")
+        {
+            Debug.Log("trigerrr");
+            Destroy(other.gameObject);
+        }
+        if(other.gameObject.tag == "Obstacle")
+        {
+            Debug.Log("trigerrr " + other.gameObject.name);
+        }
+    }
 
 }
