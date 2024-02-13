@@ -8,11 +8,15 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour,IUpdateObserver
 {
     public static UIManager Instance;
-
+    [Header("Buttons")]
     [SerializeField] private Button startButton;
     [SerializeField] private Button tryAgainButton;
+    [Header("Panels")]
+    [Space]
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject gameOverPanel;
+    [Header("Texts")]
+    [Space]
     [SerializeField] private TextMeshProUGUI countdownerText;    
     [SerializeField] private TextMeshProUGUI scoreText;    
     [SerializeField] private TextMeshProUGUI bestScoreText;    
@@ -24,10 +28,6 @@ public class UIManager : MonoBehaviour,IUpdateObserver
         if (Instance == null)
         {
             Instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
         }
         UserInterfaceUpdateBroadcaster.RegisterObserver(this);
         startButton.onClick.AddListener(StartGame);
@@ -71,6 +71,7 @@ public class UIManager : MonoBehaviour,IUpdateObserver
 
     public void TryAgainButton()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 

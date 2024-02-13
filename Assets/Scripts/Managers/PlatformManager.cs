@@ -19,7 +19,7 @@ public class PlatformManager : MonoBehaviour
     {
         for (int i = 0; i < numPlatformsToKeep; i++)
         {
-            if (i < 2) 
+            if (i < 1) 
                 SpawnPlatform(0);
             else
                 SpawnPlatform(Random.Range(0, platforms.Count));

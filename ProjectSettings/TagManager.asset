@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Obstacle
   - Gold
+  - TrainObstacle
+  - ActivateTrain
   layers:
   - Default
   - TransparentFX

@@ -23,18 +23,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        isGameStart = false;
         isGameOver = false;
         Debug.Log($"Best Score: {PlayerPrefs.GetInt("Score")}");
         if(Instance == null)
         {
             Instance = this;            
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        }       
     }
-
 
     public void TakeDamage(int damage)
     {
@@ -43,7 +39,7 @@ public class GameManager : MonoBehaviour
             health -= damage;
             Debug.Log($"Current Health : {health}");
             UIManager.Instance.OnUiUpdated();
-            if (health == 0)
+            if (health <= 0)
             {
                 health = 0;
                 GameOver();

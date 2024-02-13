@@ -4,19 +4,23 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private Animator anim;
     [SerializeField] private CharacterController controller;
+
+    [Header("Player Movement Variables")]
     [SerializeField] private float speed = 5f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float jumpHeight = 2f;
     private Vector3 playerVelocity;
     [SerializeField] private bool isGrounded;
 
-    [SerializeField] private LayerMask obstacleLayer;
+    [Header("Player Change Lane Variables")]
     [SerializeField] private float laneChangeSpeed = 10f;
     [SerializeField] private int currentLane = 0; // 0: sol , 1: orta , 2: sağ
     private readonly float[] lanePositions = new float[] { -7, 0, 7 };
 
+    [Header("Dizzy Variable")]
     [SerializeField] private float reboundForce = 5f; 
     [SerializeField] private bool isDizzy = false;
     private void Awake()
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y += gravityValue * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
             anim.SetBool("isRunning", true);
+            IncreaseSpeed();
 
             isGrounded = controller.isGrounded;
             if (isGrounded && playerVelocity.y < 0)
@@ -96,8 +101,11 @@ public class PlayerController : MonoBehaviour
         if(hit.gameObject.CompareTag("Gold"))
         {
             Destroy(hit.gameObject);
-            GameManager.Instance.IncreaseGold();         
-            
+            GameManager.Instance.IncreaseGold();               
+        }
+        if (hit.gameObject.CompareTag("TrainObstacle"))
+        {
+            GameManager.Instance.TakeDamage(3);
         }
     }
     
@@ -114,11 +122,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void IncreaseSpeed()
+    {
+        speed += 0.1f * Time.deltaTime;
+    }
+
     void ResetDizzyState()
     {
         isDizzy = false;
         
     }
+
+    #region Animation Event
+    //Rescources/Models Running Slide animasyonu içerisindeki eventler.
     public void StartSlide()
     {
         Debug.Log("Start Animation Event Triggered");
@@ -132,5 +148,6 @@ public class PlayerController : MonoBehaviour
         controller.height = 0.48f;
         controller.center = new Vector3(0f, .25f, 0.03f);
     }
-   
+    #endregion
+
 }
