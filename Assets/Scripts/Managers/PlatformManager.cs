@@ -11,9 +11,9 @@ public class PlatformManager : MonoBehaviour
     private float spawnZ = 0f; 
     [SerializeField]private float platformLength = 210f;
     [SerializeField] private int safeZone = 140; 
-    [SerializeField] private int numPlatformsToKeep = 3; 
+    [SerializeField] private int numPlatformsToKeep = 3;
 
-    [SerializeField]private List<GameObject> activePlatforms = new List<GameObject>();
+    [SerializeField] private List<GameObject> activePlatforms = new();
 
     private void Start()
     {
